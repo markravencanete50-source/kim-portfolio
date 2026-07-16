@@ -23,7 +23,7 @@ export default function Footer() {
       <div className="border-t border-line-soft">
         <div className="mx-auto flex max-w-content items-center justify-between px-5 py-5 md:px-8">
           <p className="font-mono text-[11px] text-ink-faint">© {year} — All rights reserved</p>
-          <p className="font-mono text-[11px] text-ink-faint">Cebu · PH</p>
+          <p className="font-mono text-[11px] text-ink-faint">Bohol · PH</p>
         </div>
       </div>
     </footer>

@@ -14,10 +14,10 @@ export const profile = {
     "People-First Performance Coach",
     "BPO & KPO Specialist",
   ],
-  location: "Cebu City, Philippines",
+  location: "Tagbilaran City, Bohol, Philippines",
   email: "kimcastillocaneda88@gmail.com",
   phone: "+63 968 873 2315",
-  address: "4313 Bayanihan Flats, Orchard Drive, Talamban, Cebu City",
+  address: "Tagbilaran City, Bohol, Philippines 6300",
   resume: "/Karl-Caneda-Resume.pdf",
   photo: "/karl.jpg",
   intro:
@@ -88,6 +88,34 @@ export const capabilities = [
 
 // Reverse-chronological experience timeline.
 export const experience = [
+  {
+    company: "24Fingers",
+    account: "Automation — Remote",
+    role: "Automation Specialist",
+    period: "May 2026 – Present",
+    length: "Current",
+    points: [
+      "Design and maintain automation sequences in Make.com and Pabbly, troubleshooting integration issues across tools.",
+      "Keep Capsule CRM data clean — managing pipelines and organizing contacts.",
+      "Execute, schedule, track, and analyze performance within Campaign Manager.",
+      "Track deadlines, milestones, and dependencies in Teamwork to prevent bottlenecks.",
+      "Provide administrative, documentation, and cross-functional support for remote, distributed projects.",
+    ],
+  },
+  {
+    company: "House of Lettings",
+    account: "Executive Support — UK",
+    role: "Executive Assistant & Operations Coordinator",
+    period: "Apr 2026 – Present",
+    length: "Current",
+    points: [
+      "Act as the CEO's primary operational partner across executive priorities and full remote operations.",
+      "Built Google Sheets dashboards and standardized SOPs that cut administrative overhead by 25% and accelerated reporting.",
+      "Manage a portfolio of 80+ UK property listings across Zoopla, ZooplaPro, OnTheMarket, and Gnomon.",
+      "Coordinate vendor scheduling for viewings and maintenance while preparing leasing documentation.",
+      "Drove a 30% reduction in tenant-inquiry turnaround via proactive workflows, templated responses, and centralized tracking.",
+    ],
+  },
   {
     company: "Sagility",
     account: "Healthcare — Provider of Service",
