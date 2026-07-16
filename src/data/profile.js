@@ -23,11 +23,27 @@ export const profile = {
   intro:
     "I run contact-center operations that hit their numbers without burning out the people who deliver them. Fifteen years across healthcare, telco, financial, and sales accounts — building glide paths, coaching leaders, and turning KPIs and SLAs into daily habits teams can actually keep.",
   about: [
-    "I've spent my career inside the operations floor — from taking the first call to running the whole site. That range means I read a P&L and a shrinkage report the same way I read a coaching conversation: as levers on the same outcome.",
-    "My work sits where performance meets people. I reduce attrition by fixing the environment agents work in, protect service levels by managing AUX and AHT against forecast in real time, and lift efficiency by putting the right digital tools in front of the right teams.",
-    "I lead by building clarity: weekly glide paths leaders can follow, review cadences that develop instead of just grade, and cross-department fixes that hold. Two degrees — Information Technology and Economics — keep me fluent in both the systems and the math behind the floor.",
+    "Fifteen-plus years inside the operations floor — from taking the first call to running whole sites across healthcare, telco, financial, and sales accounts. That range means I read a P&L and a shrinkage report the same way I read a coaching conversation: as levers on the same outcome.",
+    "These days that work is remote and increasingly automated. I pair traditional contact-center frameworks with AI tools and automation platforms — Make.com, Zapier, ChatGPT, Claude — to cut manual workflows, tighten reporting, and keep distributed teams productive. As a Client Success and operations partner, I've built dashboards and standardized SOPs that reduced administrative overhead by 25% and accelerated reporting cycles.",
+    "I lead by the numbers without losing the people behind them: attrition held at 4–6%, AHT kept at 480 seconds and below, and SLAs managed at 80–85% to protect coaching and meeting time. Two degrees — Information Technology and Economics — keep me fluent in both the systems and the math behind the floor.",
   ],
 };
+
+// Concrete operating benchmarks pulled from the résumé, shown in the About section.
+export const benchmarks = [
+  { label: "Attrition held", value: "4–6%" },
+  { label: "AHT maintained", value: "≤ 480s" },
+  { label: "SLA managed", value: "80–85%" },
+  { label: "Admin overhead cut", value: "25%" },
+];
+
+// Modern toolkit — AI, automation, PM, and CRM platforms from the résumé.
+export const toolkit = [
+  { group: "AI", items: ["ChatGPT", "Claude", "Gemini", "Copilot"] },
+  { group: "Automation", items: ["Make.com", "Zapier", "Pabbly"] },
+  { group: "Project Mgmt", items: ["ClickUp", "Asana", "Trello", "Jira", "Teamwork"] },
+  { group: "CRM", items: ["HubSpot", "Salesforce", "Capsule"] },
+];
 
 export const stats = [
   { value: "15+", label: "Years in BPO & operations" },
