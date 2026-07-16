@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Download, MapPin } from "lucide-react";
 import { profile } from "@/data/profile";
+import RoleCycler from "./RoleCycler";
 
 const readout = [
   { k: "SLA", v: "on target", tone: "teal" },
@@ -40,6 +41,14 @@ export default function Hero() {
             Karl Ian Martin
             <span className="block text-ink-muted">Cañeda</span>
           </motion.h1>
+
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.09 }}
+          >
+            <RoleCycler roles={profile.roles} />
+          </motion.div>
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}

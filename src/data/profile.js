@@ -6,6 +6,14 @@ export const profile = {
   shortName: "Karl Cañeda",
   title: "Operations Manager",
   tagline: "BPO & KPO Operations Leader",
+  // Rotating roles shown under the name in the hero (typewriter cycle).
+  roles: [
+    "Operations Manager",
+    "Contact-Center Operations Leader",
+    "Workforce & SLA Strategist",
+    "People-First Performance Coach",
+    "BPO & KPO Specialist",
+  ],
   location: "Cebu City, Philippines",
   email: "kimcastillocaneda88@gmail.com",
   phone: "+63 968 873 2315",
