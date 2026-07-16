@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --font-sora: "Sora", system-ui, sans-serif;
+  --font-inter: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0a0c10;
+  color: #e9ecf1;
+  font-feature-settings: "ss01", "cv01";
+}
+
+/* Subtle grain + radial glow that sits behind the whole page */
+.bg-atmos {
+  background:
+    radial-gradient(60rem 40rem at 80% -10%, rgba(45, 212, 191, 0.10), transparent 60%),
+    radial-gradient(50rem 40rem at 0% 20%, rgba(232, 176, 75, 0.06), transparent 55%),
+    #0a0c10;
+}
+
+/* Eyebrow label */
+.eyebrow {
+  @apply font-mono text-[11px] uppercase tracking-eyebrow text-teal;
+}
+
+.section-pad {
+  @apply px-5 py-20 md:px-8 md:py-28;
+}
+
+.rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #252a34 20%, #252a34 80%, transparent);
+}
+
+/* Thin scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0c10;
+}
+::-webkit-scrollbar-thumb {
+  background: #252a34;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2f3542;
+}
+
+/* Focus ring for accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #2dd4bf;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Grid overlay used as a signature texture in the hero */
+.grid-lines {
+  background-image:
+    linear-gradient(to right, rgba(37, 42, 52, 0.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(37, 42, 52, 0.5) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(60% 60% at 50% 40%, #000 30%, transparent 100%);
+}

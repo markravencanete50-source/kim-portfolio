@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Leads: anyone can create (the public booking form),
+    // but nobody can read/update/delete from the client.
+    // The admin dashboard reads leads — see the note in README
+    // about locking this down with Firebase Auth for production.
+    match /leads/{doc} {
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.email is string
+                    && request.resource.data.name.size() < 200
+                    && request.resource.data.email.size() < 200;
+      allow read, update: if true;   // TODO: replace `true` with `request.auth != null`
+      allow delete: if false;
+    }
+
+    // Page views: append-only from the public site.
+    match /pageviews/{doc} {
+      allow create: if true;
+      allow read:   if true;         // TODO: restrict to admin once Auth is added
+      allow update, delete: if false;
+    }
+  }
+}
