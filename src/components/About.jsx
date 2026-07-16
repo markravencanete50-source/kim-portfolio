@@ -33,7 +33,7 @@ export default function About() {
           <Reveal delay={0.1}>
             <div className="space-y-5 md:pt-14">
               {profile.about.map((p, i) => (
-                <p key={i} className="text-[15px] leading-relaxed text-ink-muted md:text-base">
+                <p key={i} className="text-[15px] leading-relaxed text-ink-muted md:text-[1rem]">
                   {p}
                 </p>
               ))}

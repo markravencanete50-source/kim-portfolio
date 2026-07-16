@@ -60,7 +60,7 @@ export default function RoleCycler({ roles = [] }) {
   // Static, accessible fallback when motion is reduced.
   if (reduced) {
     return (
-      <p className="mt-4 font-mono text-sm text-teal sm:text-base md:text-lg">
+      <p className="mt-4 font-mono text-sm text-teal sm:text-[1rem] md:text-lg">
         {roles[0]}
       </p>
     );
@@ -68,7 +68,7 @@ export default function RoleCycler({ roles = [] }) {
 
   return (
     <p
-      className="mt-4 flex min-h-[1.6em] items-center font-mono text-sm text-teal sm:text-base md:text-lg"
+      className="mt-4 flex min-h-[1.6em] items-center font-mono text-sm text-teal sm:text-[1rem] md:text-lg"
       aria-live="polite"
     >
       <span>{text}</span>
