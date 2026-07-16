@@ -49,14 +49,28 @@ Open http://localhost:3000 (site) and http://localhost:3000/admin (dashboard).
    and publish. Collections `leads` and `pageviews` are created automatically
    on first write — no manual setup needed.
 
-5. Set an admin password in `.env.local`:
+5. Set up the **admin account** (this replaces the old password gate):
 
-   ```
-   NEXT_PUBLIC_ADMIN_PASSWORD=your-strong-password
-   ```
+   1. In the Firebase Console → **Authentication** → **Sign-in method**, enable
+      **Email/Password**.
+   2. Under **Authentication → Users**, **Add user** with the admin email and a
+      strong password.
+   3. In **Firestore**, create a collection named **`user`**. Add a document
+      whose **ID is that user's UID** (copy it from the Users tab) with fields:
+
+      ```
+      email:       admin@example.com
+      displayName: Karl
+      role:        admin
+      createdAt:   (timestamp)
+      ```
+
+   The `/admin` dashboard signs in with Email/Password and only unlocks when the
+   signed-in user's `user/{uid}` document has `role: "admin"`.
 
 ### Data model
 
+- **`user`** — `{ email, displayName, role, createdAt }` (doc ID = Auth UID)
 - **`leads`** — `{ name, email, company, preferredTime, message, status, createdAt }`
 - **`pageviews`** — `{ path, session, referrer, createdAt }`
 
@@ -83,26 +97,30 @@ your Firebase keys and password are never committed.
 1. Push to GitHub (section 3).
 2. Go to [vercel.com](https://vercel.com) → **Add New… → Project** → import the repo.
 3. Vercel auto-detects Next.js. Before deploying, add the **Environment Variables**
-   from your `.env.local` (all seven `NEXT_PUBLIC_*` keys) under
+   from your `.env.local` (the six `NEXT_PUBLIC_FIREBASE_*` keys) under
    **Settings → Environment Variables**.
 4. Deploy. Every push to `main` redeploys automatically.
 
-After deploying, add your live domain to Firebase → **Authentication → Settings →
-Authorized domains** if you later enable Firebase Auth.
+After deploying, add your live domain (e.g. `your-app.vercel.app`) to Firebase →
+**Authentication → Settings → Authorized domains** — otherwise admin sign-in will
+be blocked on the deployed site.
 
 ---
 
-## 5. Making the admin secure (recommended for production)
+## 5. Admin security
 
-The `/admin` gate uses a simple password check, and `firestore.rules` currently
-allows public reads on `leads`/`pageviews` so the dashboard works out of the box.
-That's fine for a low-stakes personal site, but for real protection:
+The `/admin` dashboard is protected by **Firebase Authentication** and
+role-based Firestore rules:
 
-1. Enable **Firebase Authentication** (Email/Password) and create one admin user.
-2. In `firestore.rules`, change the `allow read, update` lines from `if true` to
-   `if request.auth != null`.
-3. Replace the password gate in `src/app/admin/page.jsx` with a Firebase
-   `signInWithEmailAndPassword` login.
+- Sign-in uses **Email/Password** (`src/lib/auth.js`).
+- Access is granted only when the signed-in user's `user/{uid}` document has
+  `role: "admin"` — set this up in section 2, step 5.
+- `firestore.rules` allows public **create** on `leads`/`pageviews` (so the
+  booking form and analytics still work for anonymous visitors) but restricts
+  **read/update** to admins via an `isAdmin()` check.
+
+To add another admin, create the Auth user and a matching `user/{uid}` document
+with `role: "admin"`.
 
 ---
 

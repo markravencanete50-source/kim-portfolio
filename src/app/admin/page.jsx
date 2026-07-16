@@ -14,8 +14,7 @@ import {
 } from "lucide-react";
 import { fetchLeads, fetchPageViews, updateLeadStatus } from "@/lib/analytics";
 import { firebaseReady } from "@/lib/firebase";
-
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "changeme";
+import { signInAdmin, signOutAdmin, watchAdmin } from "@/lib/auth";
 
 // Normalize Firestore Timestamp | Date | null -> Date | null
 function toDate(ts) {
@@ -31,19 +30,24 @@ function dayKey(d) {
 
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
+  const [authReady, setAuthReady] = useState(false); // finished restoring session
+  const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [authError, setAuthError] = useState("");
+  const [signingIn, setSigningIn] = useState(false);
 
   const [leads, setLeads] = useState([]);
   const [views, setViews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState("");
 
-  // Restore session unlock
+  // Restore session from Firebase Auth (persists across reloads).
   useEffect(() => {
-    if (typeof window !== "undefined" && window.sessionStorage.getItem("kc_admin") === "1") {
-      setAuthed(true);
-    }
+    const unsub = watchAdmin((ok) => {
+      setAuthed(ok);
+      setAuthReady(true);
+    });
+    return unsub;
   }, []);
 
   async function load() {
@@ -64,20 +68,24 @@ export default function AdminPage() {
     if (authed && firebaseReady) load();
   }, [authed]);
 
-  function unlock(e) {
+  async function unlock(e) {
     e.preventDefault();
-    if (pass === ADMIN_PASSWORD) {
-      setAuthed(true);
-      window.sessionStorage.setItem("kc_admin", "1");
-      setAuthError("");
-    } else {
-      setAuthError("Incorrect password.");
+    setSigningIn(true);
+    setAuthError("");
+    try {
+      await signInAdmin(email, pass);
+      // watchAdmin() flips `authed` once auth state updates.
+      setPass("");
+    } catch (err) {
+      setAuthError(err.message || "Sign-in failed.");
+    } finally {
+      setSigningIn(false);
     }
   }
 
-  function lock() {
+  async function lock() {
+    await signOutAdmin();
     setAuthed(false);
-    window.sessionStorage.removeItem("kc_admin");
   }
 
   async function setStatus(id, status) {
@@ -141,6 +149,15 @@ export default function AdminPage() {
 
   const maxSeries = Math.max(1, ...metrics.series.map((s) => s.count));
 
+  // --- Restoring session ---
+  if (!authReady) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-atmos px-5">
+        <Loader2 className="h-6 w-6 animate-spin text-ink-faint" />
+      </div>
+    );
+  }
+
   // --- Login gate ---
   if (!authed) {
     return (
@@ -154,22 +171,38 @@ export default function AdminPage() {
           </span>
           <h1 className="mt-5 font-display text-xl font-semibold text-ink">Command center</h1>
           <p className="mt-1.5 text-sm text-ink-muted">
-            Enter the admin password to view analytics and leads.
+            Sign in with your admin account to view analytics and leads.
           </p>
+          {!firebaseReady && (
+            <p className="mt-4 rounded-md border border-gold/40 bg-gold/5 p-3 text-[13px] text-gold">
+              Firebase isn&apos;t configured yet — set the environment variables to enable sign-in.
+            </p>
+          )}
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            autoComplete="username"
+            autoFocus
+            className="mt-6 w-full rounded-md border border-line bg-surface px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:border-teal"
+          />
           <input
             type="password"
             value={pass}
             onChange={(e) => setPass(e.target.value)}
             placeholder="Password"
-            autoFocus
-            className="mt-6 w-full rounded-md border border-line bg-surface px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:border-teal"
+            autoComplete="current-password"
+            className="mt-3 w-full rounded-md border border-line bg-surface px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:border-teal"
           />
           {authError && <p className="mt-2 text-[13px] text-gold">{authError}</p>}
           <button
             type="submit"
-            className="mt-4 w-full rounded-md bg-teal px-5 py-2.5 text-sm font-semibold text-base transition-transform hover:-translate-y-0.5"
+            disabled={signingIn || !firebaseReady}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-md bg-teal px-5 py-2.5 text-sm font-semibold text-base transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Unlock
+            {signingIn && <Loader2 className="h-4 w-4 animate-spin" />}
+            {signingIn ? "Signing in…" : "Sign in"}
           </button>
           <a href="/" className="mt-4 block text-center font-mono text-[11px] text-ink-faint hover:text-ink">
             ← Back to site
